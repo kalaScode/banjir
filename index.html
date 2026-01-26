@@ -1,79 +1,83 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css">
-        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
-        <link rel="stylesheet" href="css/qgis2web.css">
-        <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet.photon.css">
-        <style>
-        html, body, #map {
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/leaflet.photon.css">
+    <style>
+        html,
+        body,
+        #map {
             width: 100%;
             height: 100%;
             padding: 0;
             margin: 0;
         }
-        </style>
-        <title></title>
-    </head>
-    <body>
-        <div id="map">
-        </div>
-        <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/L.Control.Layers.Tree.min.js"></script>
-        <script src="js/leaflet.rotatedMarker.js"></script>
-        <script src="js/leaflet.pattern.js"></script>
-        <script src="js/leaflet-hash.js"></script>
-        <script src="js/Autolinker.min.js"></script>
-        <script src="js/rbush.min.js"></script>
-        <script src="js/labelgun.min.js"></script>
-        <script src="js/labels.js"></script>
-        <script src="js/leaflet.photon.js"></script>
-        <script src="data/BatasKabupatenKota_2.js"></script>
-        <script src="data/BatasKecamatan_3.js"></script>
-        <script src="data/BatasDesa_4.js"></script>
-        <script>
+    </style>
+    <title></title>
+</head>
+
+<body>
+    <div id="map">
+    </div>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/L.Control.Layers.Tree.min.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet.photon.js"></script>
+    <script src="data/BatasKabupatenKota_4.js"></script>
+    <script src="data/BatasKecamatan_5.js"></script>
+    <script src="data/BatasDesa_6.js"></script>
+    <script>
         var highlightLayer;
         function highlightFeature(e) {
             highlightLayer = e.target;
 
             if (e.target.feature.geometry.type === 'LineString' || e.target.feature.geometry.type === 'MultiLineString') {
-              highlightLayer.setStyle({
-                color: 'rgba(255, 255, 0, 1.00)',
-              });
+                highlightLayer.setStyle({
+                    color: 'rgba(255, 255, 0, 1.00)',
+                });
             } else {
-              highlightLayer.setStyle({
-                fillColor: 'rgba(255, 255, 0, 1.00)',
-                fillOpacity: 1
-              });
+                highlightLayer.setStyle({
+                    fillColor: 'rgba(255, 255, 0, 1.00)',
+                    fillOpacity: 1
+                });
             }
             highlightLayer.openPopup();
         }
         var map = L.map('map', {
-            zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[-3.2415958873573967,92.31593859891335],[6.672082602513621,104.57373811101986]]);
+            zoomControl: false, maxZoom: 28, minZoom: 1
+        }).fitBounds([[1.4804722426091335, 94.2848329157342], [6.437453977840365, 99.6542091380895]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
-        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var autolinker = new Autolinker({ truncate: { length: 30, location: 'smart' } });
         // remove popup's row if "visible-with-data"
         function removeEmptyRowsFromPopupContent(content, feature) {
-         var tempDiv = document.createElement('div');
-         tempDiv.innerHTML = content;
-         var rows = tempDiv.querySelectorAll('tr');
-         for (var i = 0; i < rows.length; i++) {
-             var td = rows[i].querySelector('td.visible-with-data');
-             var key = td ? td.id : '';
-             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
-                 rows[i].parentNode.removeChild(rows[i]);
-             }
-         }
-         return tempDiv.innerHTML;
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            var rows = tempDiv.querySelectorAll('tr');
+            for (var i = 0; i < rows.length; i++) {
+                var td = rows[i].querySelector('td.visible-with-data');
+                var key = td ? td.id : '';
+                if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                    rows[i].parentNode.removeChild(rows[i]);
+                }
+            }
+            return tempDiv.innerHTML;
         }
         // modify popup if contains media
         function addClassToPopupIfMedia(content, popup) {
@@ -84,7 +88,7 @@
                 var src = imgTd.getAttribute('src');
                 if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
                     popup._contentNode.classList.add('media');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         popup.update();
                     }, 10);
                 } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
@@ -93,7 +97,7 @@
                     audio.src = src;
                     imgTd.parentNode.replaceChild(audio, imgTd);
                     popup._contentNode.classList.add('media');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         popup.setContent(tempDiv.innerHTML);
                         popup.update();
                     }, 10);
@@ -108,10 +112,10 @@
                     imgTd.parentNode.replaceChild(video, imgTd);
                     popup._contentNode.classList.add('media');
                     // Aggiorna il popup quando il video carica i metadati
-                    video.addEventListener('loadedmetadata', function() {
+                    video.addEventListener('loadedmetadata', function () {
                         popup.update();
                     });
-                    setTimeout(function() {
+                    setTimeout(function () {
                         popup.setContent(tempDiv.innerHTML);
                         popup.update();
                     }, 10);
@@ -144,15 +148,32 @@
         map.createPane('pane_IdentifikasiBanjir_1');
         map.getPane('pane_IdentifikasiBanjir_1').style.zIndex = 401;
         var img_IdentifikasiBanjir_1 = 'data/IdentifikasiBanjir_1.png';
-        var img_bounds_IdentifikasiBanjir_1 = [[-3.3511770199327118,95.00757648743084],[6.090692951939751,101.90850695247666]];
+        var img_bounds_IdentifikasiBanjir_1 = [[-3.3511770199327118, 95.00757648743084], [6.090692951939751, 101.90850695247666]];
         var layer_IdentifikasiBanjir_1 = new L.imageOverlay(img_IdentifikasiBanjir_1,
-                                              img_bounds_IdentifikasiBanjir_1,
-                                              {pane: 'pane_IdentifikasiBanjir_1'});
+            img_bounds_IdentifikasiBanjir_1,
+            { pane: 'pane_IdentifikasiBanjir_1' });
         bounds_group.addLayer(layer_IdentifikasiBanjir_1);
         map.addLayer(layer_IdentifikasiBanjir_1);
-        function pop_BatasKabupatenKota_2(feature, layer) {
+        map.createPane('pane_IdentifikasiLongsorslope15_2');
+        map.getPane('pane_IdentifikasiLongsorslope15_2').style.zIndex = 402;
+        var img_IdentifikasiLongsorslope15_2 = 'data/IdentifikasiLongsorslope15_2.png';
+        var img_bounds_IdentifikasiLongsorslope15_2 = [[-3.490138788372434, 95.0080216693422], [5.917546403539852, 101.9078610293026]];
+        var layer_IdentifikasiLongsorslope15_2 = new L.imageOverlay(img_IdentifikasiLongsorslope15_2,
+            img_bounds_IdentifikasiLongsorslope15_2,
+            { pane: 'pane_IdentifikasiLongsorslope15_2' });
+        bounds_group.addLayer(layer_IdentifikasiLongsorslope15_2);
+        map.createPane('pane_IdentifikasiLongsorslope20_3');
+        map.getPane('pane_IdentifikasiLongsorslope20_3').style.zIndex = 403;
+        var img_IdentifikasiLongsorslope20_3 = 'data/IdentifikasiLongsorslope20_3.png';
+        var img_bounds_IdentifikasiLongsorslope20_3 = [[-3.490138788372434, 95.0080216693422], [5.917546403539852, 101.9078610293026]];
+        var layer_IdentifikasiLongsorslope20_3 = new L.imageOverlay(img_IdentifikasiLongsorslope20_3,
+            img_bounds_IdentifikasiLongsorslope20_3,
+            { pane: 'pane_IdentifikasiLongsorslope20_3' });
+        bounds_group.addLayer(layer_IdentifikasiLongsorslope20_3);
+        map.addLayer(layer_IdentifikasiLongsorslope20_3);
+        function pop_BatasKabupatenKota_4(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -161,7 +182,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -177,110 +198,48 @@
                         <td class="visible-with-data" id="NAME_2">' + (feature.properties['NAME_2'] !== null ? autolinker.link(String(feature.properties['NAME_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Luas (km2)</th>\
+                        <th scope="row">Luas banjir (km2)</th>\
                         <td class="visible-with-data" id="kabkot_km2">' + (feature.properties['kabkot_km2'] !== null ? autolinker.link(String(feature.properties['kabkot_km2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_BatasKabupatenKota_2_0(feature) {
-            if (feature.properties['kabkot_km2'] >= 0.000000 && feature.properties['kabkot_km2'] <= 14.180000 ) {
-                return {
-                pane: 'pane_BatasKabupatenKota_2',
+        function style_BatasKabupatenKota_4_0() {
+            return {
+                pane: 'pane_BatasKabupatenKota_4',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1.0, 
+                weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(247,251,255,1.0)',
+                fillColor: 'rgba(231,113,72,0.0)',
                 interactive: true,
-            }
-            }
-            if (feature.properties['kabkot_km2'] >= 14.180000 && feature.properties['kabkot_km2'] <= 54.550000 ) {
-                return {
-                pane: 'pane_BatasKabupatenKota_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(200,220,240,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['kabkot_km2'] >= 54.550000 && feature.properties['kabkot_km2'] <= 146.570000 ) {
-                return {
-                pane: 'pane_BatasKabupatenKota_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(115,178,216,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['kabkot_km2'] >= 146.570000 && feature.properties['kabkot_km2'] <= 228.850000 ) {
-                return {
-                pane: 'pane_BatasKabupatenKota_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(41,121,185,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['kabkot_km2'] >= 228.850000 && feature.properties['kabkot_km2'] <= 353.330000 ) {
-                return {
-                pane: 'pane_BatasKabupatenKota_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(8,48,107,1.0)',
-                interactive: true,
-            }
             }
         }
-        map.createPane('pane_BatasKabupatenKota_2');
-        map.getPane('pane_BatasKabupatenKota_2').style.zIndex = 402;
-        map.getPane('pane_BatasKabupatenKota_2').style['mix-blend-mode'] = 'normal';
-        var layer_BatasKabupatenKota_2 = new L.geoJson(json_BatasKabupatenKota_2, {
+        map.createPane('pane_BatasKabupatenKota_4');
+        map.getPane('pane_BatasKabupatenKota_4').style.zIndex = 404;
+        map.getPane('pane_BatasKabupatenKota_4').style['mix-blend-mode'] = 'normal';
+        var layer_BatasKabupatenKota_4 = new L.geoJson(json_BatasKabupatenKota_4, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_BatasKabupatenKota_2',
-            layerName: 'layer_BatasKabupatenKota_2',
-            pane: 'pane_BatasKabupatenKota_2',
-            onEachFeature: pop_BatasKabupatenKota_2,
-            style: style_BatasKabupatenKota_2_0,
+            dataVar: 'json_BatasKabupatenKota_4',
+            layerName: 'layer_BatasKabupatenKota_4',
+            pane: 'pane_BatasKabupatenKota_4',
+            onEachFeature: pop_BatasKabupatenKota_4,
+            style: style_BatasKabupatenKota_4_0,
         });
-        bounds_group.addLayer(layer_BatasKabupatenKota_2);
-        function pop_BatasKecamatan_3(feature, layer) {
+        bounds_group.addLayer(layer_BatasKabupatenKota_4);
+        function pop_BatasKecamatan_5(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -289,7 +248,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -309,110 +268,48 @@
                         <td class="visible-with-data" id="NAME_3">' + (feature.properties['NAME_3'] !== null ? autolinker.link(String(feature.properties['NAME_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Luas (km2)</th>\
+                        <th scope="row">Luas banjir (km2)</th>\
                         <td class="visible-with-data" id="kec_km2">' + (feature.properties['kec_km2'] !== null ? autolinker.link(String(feature.properties['kec_km2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_BatasKecamatan_3_0(feature) {
-            if (feature.properties['kec_km2'] >= 0.000000 && feature.properties['kec_km2'] <= 3.770000 ) {
-                return {
-                pane: 'pane_BatasKecamatan_3',
+        function style_BatasKecamatan_5_0() {
+            return {
+                pane: 'pane_BatasKecamatan_5',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1.0, 
+                weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(247,251,255,1.0)',
+                fillColor: 'rgba(231,113,72,0.0)',
                 interactive: true,
-            }
-            }
-            if (feature.properties['kec_km2'] >= 3.770000 && feature.properties['kec_km2'] <= 13.410000 ) {
-                return {
-                pane: 'pane_BatasKecamatan_3',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(200,220,240,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['kec_km2'] >= 13.410000 && feature.properties['kec_km2'] <= 30.670000 ) {
-                return {
-                pane: 'pane_BatasKecamatan_3',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(115,178,216,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['kec_km2'] >= 30.670000 && feature.properties['kec_km2'] <= 54.170000 ) {
-                return {
-                pane: 'pane_BatasKecamatan_3',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(41,121,185,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['kec_km2'] >= 54.170000 && feature.properties['kec_km2'] <= 79.070000 ) {
-                return {
-                pane: 'pane_BatasKecamatan_3',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(8,48,107,1.0)',
-                interactive: true,
-            }
             }
         }
-        map.createPane('pane_BatasKecamatan_3');
-        map.getPane('pane_BatasKecamatan_3').style.zIndex = 403;
-        map.getPane('pane_BatasKecamatan_3').style['mix-blend-mode'] = 'normal';
-        var layer_BatasKecamatan_3 = new L.geoJson(json_BatasKecamatan_3, {
+        map.createPane('pane_BatasKecamatan_5');
+        map.getPane('pane_BatasKecamatan_5').style.zIndex = 405;
+        map.getPane('pane_BatasKecamatan_5').style['mix-blend-mode'] = 'normal';
+        var layer_BatasKecamatan_5 = new L.geoJson(json_BatasKecamatan_5, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_BatasKecamatan_3',
-            layerName: 'layer_BatasKecamatan_3',
-            pane: 'pane_BatasKecamatan_3',
-            onEachFeature: pop_BatasKecamatan_3,
-            style: style_BatasKecamatan_3_0,
+            dataVar: 'json_BatasKecamatan_5',
+            layerName: 'layer_BatasKecamatan_5',
+            pane: 'pane_BatasKecamatan_5',
+            onEachFeature: pop_BatasKecamatan_5,
+            style: style_BatasKecamatan_5_0,
         });
-        bounds_group.addLayer(layer_BatasKecamatan_3);
-        function pop_BatasDesa_4(feature, layer) {
+        bounds_group.addLayer(layer_BatasKecamatan_5);
+        function pop_BatasDesa_6(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -421,7 +318,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -437,113 +334,57 @@
                         <td class="visible-with-data" id="NAME_2">' + (feature.properties['NAME_2'] !== null ? autolinker.link(String(feature.properties['NAME_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Kecamatan</th>\
+                        <td class="visible-with-data" id="NAME_3">' + (feature.properties['NAME_3'] !== null ? autolinker.link(String(feature.properties['NAME_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
                         <th scope="row">Desa/Kel</th>\
                         <td class="visible-with-data" id="NAME_4">' + (feature.properties['NAME_4'] !== null ? autolinker.link(String(feature.properties['NAME_4']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Luas (km2)</th>\
+                        <th scope="row">Luas banjir (km2)</th>\
                         <td class="visible-with-data" id="desa_km2">' + (feature.properties['desa_km2'] !== null ? autolinker.link(String(feature.properties['desa_km2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_BatasDesa_4_0(feature) {
-            if (feature.properties['desa_km2'] >= 0.000000 && feature.properties['desa_km2'] <= 0.710000 ) {
-                return {
-                pane: 'pane_BatasDesa_4',
+        function style_BatasDesa_6_0() {
+            return {
+                pane: 'pane_BatasDesa_6',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1, 
+                weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(247,251,255,1.0)',
+                fillColor: 'rgba(231,113,72,0.0)',
                 interactive: true,
-            }
-            }
-            if (feature.properties['desa_km2'] >= 0.710000 && feature.properties['desa_km2'] <= 2.710000 ) {
-                return {
-                pane: 'pane_BatasDesa_4',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(200,220,240,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['desa_km2'] >= 2.710000 && feature.properties['desa_km2'] <= 6.510000 ) {
-                return {
-                pane: 'pane_BatasDesa_4',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(115,178,216,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['desa_km2'] >= 6.510000 && feature.properties['desa_km2'] <= 15.350000 ) {
-                return {
-                pane: 'pane_BatasDesa_4',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(41,121,185,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['desa_km2'] >= 15.350000 && feature.properties['desa_km2'] <= 42.360000 ) {
-                return {
-                pane: 'pane_BatasDesa_4',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(8,48,107,1.0)',
-                interactive: true,
-            }
             }
         }
-        map.createPane('pane_BatasDesa_4');
-        map.getPane('pane_BatasDesa_4').style.zIndex = 404;
-        map.getPane('pane_BatasDesa_4').style['mix-blend-mode'] = 'normal';
-        var layer_BatasDesa_4 = new L.geoJson(json_BatasDesa_4, {
+        map.createPane('pane_BatasDesa_6');
+        map.getPane('pane_BatasDesa_6').style.zIndex = 406;
+        map.getPane('pane_BatasDesa_6').style['mix-blend-mode'] = 'normal';
+        var layer_BatasDesa_6 = new L.geoJson(json_BatasDesa_6, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_BatasDesa_4',
-            layerName: 'layer_BatasDesa_4',
-            pane: 'pane_BatasDesa_4',
-            onEachFeature: pop_BatasDesa_4,
-            style: style_BatasDesa_4_0,
+            dataVar: 'json_BatasDesa_6',
+            layerName: 'layer_BatasDesa_6',
+            pane: 'pane_BatasDesa_6',
+            onEachFeature: pop_BatasDesa_6,
+            style: style_BatasDesa_6_0,
         });
-        bounds_group.addLayer(layer_BatasDesa_4);
-        const url = {"Nominatim OSM": "https://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&",
-        "France BAN": "https://api-adresse.data.gouv.fr/search/?"}
+        bounds_group.addLayer(layer_BatasDesa_6);
+        const url = {
+            "Nominatim OSM": "https://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&",
+            "France BAN": "https://api-adresse.data.gouv.fr/search/?"
+        }
         var photonControl = L.control.photon({
             url: url["Nominatim OSM"],
             feedbackLabel: '',
@@ -552,14 +393,14 @@
             initial: true,
             // resultsHandler: myHandler,
         }).addTo(map);
-        photonControl._container.childNodes[0].style.borderRadius="10px"
+        photonControl._container.childNodes[0].style.borderRadius = "10px"
         // Create a variable to store the geoJSON data
         var x = null;
         // Create a variable to store the marker
         var marker = null;
         // Add an event listener to the Photon control to create a marker from the returned geoJSON data
         var z = null;
-        photonControl.on('selected', function(e) {
+        photonControl.on('selected', function (e) {
             console.log(photonControl.search.resultsContainer);
             if (x != null) {
                 map.removeLayer(obj3.marker);
@@ -570,14 +411,14 @@
             var label = typeof obj2.gcd.properties.label === 'undefined' ? obj2.gcd.properties.display_name : obj2.gcd.properties.label;
             obj3.marker = L.marker(x.getLayers()[0].getLatLng()).bindPopup(label).addTo(map);
             map.setView(x.getLayers()[0].getLatLng(), 17);
-            z = typeof e.choice.properties.label === 'undefined'? e.choice.properties.display_name : e.choice.properties.label;
+            z = typeof e.choice.properties.label === 'undefined' ? e.choice.properties.display_name : e.choice.properties.label;
             console.log(e);
             e.target.input.value = z;
         });
         var search = document.getElementsByClassName("leaflet-photon leaflet-control")[0];
         search.classList.add("leaflet-control-search")
         search.style.display = "flex";
-        search.style.backgroundColor="rgba(255,255,255,0.5)" 
+        search.style.backgroundColor = "rgba(255,255,255,0.5)"
 
         // Create the new button element
         var button = document.createElement("div");
@@ -596,12 +437,14 @@
             }
         });
         var overlaysTree = [
-            {label: 'Batas Desa<br /><table><tr><td style="text-align: center;"><img src="legend/BatasDesa_4_00710.png" /></td><td>0 - 0,71</td></tr><tr><td style="text-align: center;"><img src="legend/BatasDesa_4_0712711.png" /></td><td>0,71 - 2,71</td></tr><tr><td style="text-align: center;"><img src="legend/BatasDesa_4_2716512.png" /></td><td>2,71 - 6,51</td></tr><tr><td style="text-align: center;"><img src="legend/BatasDesa_4_65115353.png" /></td><td>6,51 - 15,35</td></tr><tr><td style="text-align: center;"><img src="legend/BatasDesa_4_153542364.png" /></td><td>15,35 - 42,36</td></tr></table>', layer: layer_BatasDesa_4},
-            {label: 'Batas Kecamatan<br /><table><tr><td style="text-align: center;"><img src="legend/BatasKecamatan_3_0380.png" /></td><td>0 - 3,8</td></tr><tr><td style="text-align: center;"><img src="legend/BatasKecamatan_3_381341.png" /></td><td>3,8 - 13,4</td></tr><tr><td style="text-align: center;"><img src="legend/BatasKecamatan_3_1343072.png" /></td><td>13,4 - 30,7</td></tr><tr><td style="text-align: center;"><img src="legend/BatasKecamatan_3_3075423.png" /></td><td>30,7 - 54,2</td></tr><tr><td style="text-align: center;"><img src="legend/BatasKecamatan_3_5427914.png" /></td><td>54,2 - 79,1</td></tr></table>', layer: layer_BatasKecamatan_3},
-            {label: 'Batas Kabupaten/Kota<br /><table><tr><td style="text-align: center;"><img src="legend/BatasKabupatenKota_2_0140.png" /></td><td>0 - 14</td></tr><tr><td style="text-align: center;"><img src="legend/BatasKabupatenKota_2_14551.png" /></td><td>14 - 55</td></tr><tr><td style="text-align: center;"><img src="legend/BatasKabupatenKota_2_551472.png" /></td><td>55 - 147</td></tr><tr><td style="text-align: center;"><img src="legend/BatasKabupatenKota_2_1472293.png" /></td><td>147 - 229</td></tr><tr><td style="text-align: center;"><img src="legend/BatasKabupatenKota_2_2293534.png" /></td><td>229 - 353</td></tr></table>', layer: layer_BatasKabupatenKota_2},
-            {label: "Identifikasi Banjir", layer: layer_IdentifikasiBanjir_1},
-            {label: "OpenStreetMap", layer: layer_OpenStreetMap_0, radioGroup: 'bm' },]
-        var lay = L.control.layers.tree(null, overlaysTree,{
+            { label: '<img src="legend/BatasDesa_6.png" /> Batas Desa', layer: layer_BatasDesa_6 },
+            { label: '<img src="legend/BatasKecamatan_5.png" /> Batas Kecamatan', layer: layer_BatasKecamatan_5 },
+            { label: '<img src="legend/BatasKabupatenKota_4.png" /> Batas Kabupaten/Kota', layer: layer_BatasKabupatenKota_4 },
+            { label: "Identifikasi Longsor slope >20", layer: layer_IdentifikasiLongsorslope20_3 },
+            { label: "Identifikasi Longsor slope >15", layer: layer_IdentifikasiLongsorslope15_2 },
+            { label: "Identifikasi Banjir", layer: layer_IdentifikasiBanjir_1 },
+            { label: "OpenStreetMap", layer: layer_OpenStreetMap_0, radioGroup: 'bm' },]
+        var lay = L.control.layers.tree(null, overlaysTree, {
             //namedToggle: true,
             //selectorBack: false,
             //closedSymbol: '&#8862; &#x1f5c0;',
@@ -611,25 +454,45 @@
             collapsed: true,
         });
         lay.addTo(map);
-        var legend = L.control({position: 'bottomright'});
-        legend.onAdd = function (map) {
+        var legend = L.control({ position: 'bottomright' });
+        function updateLegend() {
             var div = L.DomUtil.create('div', 'info legend');
+            var hasLongsor = map.hasLayer(layer_IdentifikasiLongsorslope15_2)||map.hasLayer(layer_IdentifikasiLongsorslope20_3);
+            var hasLongsor15 = map.hasLayer(layer_IdentifikasiLongsorslope15_2);
+            var hasLongsor20 = map.hasLayer(layer_IdentifikasiLongsorslope20_3);
             div.innerHTML = '<h4>Probability Banjir</h4>' +
                 '<div style="width: 200px; height: 20px; background: linear-gradient(to right, #87CEEB, #00008B); margin-bottom: 5px;"></div>' +
-                '<div style="display: flex; justify-content: space-between;"><span>Sedang</span><span>Tinggi</span></div>';
+                '<div style="display: flex; justify-content: space-between;"><span>Rendah</span><span>Tinggi</span></div>';
+            if (hasLongsor) {
+                div.innerHTML += '<br><h4>Identifikasi Longsor</h4>';
+            }
+            if (hasLongsor20) {
+                div.innerHTML += '<div style="display: flex; align-items: center; margin-bottom: 5px;"><div style="width: 20px; height: 20px; background: #800026; margin-right: 5px;"></div><span>Slope >20</span></div>';
+            }
+            if (hasLongsor15) {
+                div.innerHTML +=
+                    '<div style="display: flex; align-items: center; margin-bottom: 5px;"><div style="width: 20px; height: 20px; background: #00441b; margin-right: 5px;"></div><span>Slope >15</span></div>';
+            }
             div.style.backgroundColor = 'white';
             div.style.padding = '0px 5px 10px 5px';
             div.style.border = '2px solid #ccc';
             div.style.borderRadius = '10px';
             return div;
+        }
+        legend.onAdd = function (map) {
+            return updateLegend();
         };
         legend.addTo(map);
+        map.on('overlayadd overlayremove', function () {
+            legend.getContainer().innerHTML = updateLegend().innerHTML;
+        });
         setBounds();
         L.ImageOverlay.include({
             getBounds: function () {
                 return this._bounds;
             }
         });
-        </script>        
-    </body>
+    </script>
+</body>
+
 </html>
